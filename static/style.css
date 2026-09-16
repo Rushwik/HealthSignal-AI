@@ -1,0 +1,919 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg-main: #07111f;
+    --bg-card: rgba(16, 31, 52, 0.78);
+    --border: rgba(148, 163, 184, 0.18);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --cyan: #22d3ee;
+    --blue: #38bdf8;
+    --green: #2dd4bf;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    background:
+        radial-gradient(circle at top left, #102c49 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #123d45 0%, transparent 30%),
+        var(--bg-main);
+    overflow-x: hidden;
+}
+
+/* =====================================================
+   BACKGROUND GLOW
+   ===================================================== */
+
+.background-glow {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: -1;
+    animation: floatingGlow 12s ease-in-out infinite alternate;
+}
+
+.glow-one {
+    top: 10%;
+    left: -150px;
+    background: var(--cyan);
+}
+
+.glow-two {
+    right: -150px;
+    bottom: 5%;
+    background: var(--green);
+    animation-delay: 3s;
+}
+
+@keyframes floatingGlow {
+    from {
+        transform: translateY(0) scale(1);
+    }
+
+    to {
+        transform: translateY(-60px) scale(1.2);
+    }
+}
+
+/* =====================================================
+   NAVBAR
+   ===================================================== */
+
+.custom-navbar {
+    padding: 25px 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+    background: rgba(7, 17, 31, 0.65);
+    backdrop-filter: blur(18px);
+}
+
+.brand-logo {
+    color: white !important;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.brand-logo span:last-child {
+    color: var(--cyan);
+}
+
+.brand-icon {
+    color: var(--cyan);
+    margin-right: 7px;
+}
+
+.navbar-text {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+.status-dot,
+.pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 15px var(--green);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.45;
+        transform: scale(0.7);
+    }
+}
+
+/* =====================================================
+   MAIN
+   ===================================================== */
+
+.main-container {
+    padding-top: 45px;
+    padding-bottom: 60px;
+}
+
+/* =====================================================
+   HERO
+   ===================================================== */
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+    min-height: 390px;
+    animation: fadeUp 0.8s ease both;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    border-radius: 50px;
+    color: var(--cyan);
+    background: rgba(34, 211, 238, 0.07);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.sparkle {
+    font-size: 1rem;
+}
+
+h1 {
+    margin-top: 24px;
+    margin-bottom: 22px;
+    font-size: clamp(2.6rem, 5vw, 4.7rem);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -3px;
+}
+
+.gradient-text {
+    display: block;
+    background: linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--green),
+        #a5f3fc
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: gradientMove 5s linear infinite;
+}
+
+@keyframes gradientMove {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.hero-description {
+    max-width: 570px;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.safety-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 520px;
+    margin-top: 22px;
+    padding: 13px 16px;
+    border-left: 3px solid var(--green);
+    color: #cbd5e1;
+    background: rgba(45, 212, 191, 0.06);
+    font-size: 0.82rem;
+}
+
+/* =====================================================
+   AI ORB
+   ===================================================== */
+
+.orb-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 330px;
+    height: 360px;
+    flex-shrink: 0;
+}
+
+.ai-orb {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            #a5f3fc,
+            #0891b2 35%,
+            #164e63 70%,
+            #07111f
+        );
+    box-shadow:
+        0 0 35px rgba(34, 211, 238, 0.65),
+        0 0 100px rgba(34, 211, 238, 0.28),
+        inset 0 0 35px rgba(255, 255, 255, 0.2);
+    animation: orbFloat 5s ease-in-out infinite;
+    z-index: 2;
+}
+
+.orb-core {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        #ecfeff,
+        #67e8f9 45%,
+        #0891b2
+    );
+    filter: blur(1px);
+    box-shadow: 0 0 35px #67e8f9;
+}
+
+.orb-symbol {
+    position: relative;
+    z-index: 3;
+    color: #082f49;
+    font-size: 2.3rem;
+    font-weight: 800;
+}
+
+.orb-ring {
+    position: absolute;
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    border-radius: 50%;
+}
+
+.ring-one {
+    width: 220px;
+    height: 220px;
+    border-color: rgba(34, 211, 238, 0.45);
+    animation: rotateRing 18s linear infinite;
+}
+
+.ring-two {
+    width: 285px;
+    height: 285px;
+    border-style: dashed;
+    border-color: rgba(56, 189, 248, 0.3);
+    animation: rotateRingReverse 25s linear infinite;
+}
+
+.ring-three {
+    width: 340px;
+    height: 340px;
+    border-color: rgba(45, 212, 191, 0.25);
+    animation: rotateRing 35s linear infinite;
+}
+
+@keyframes rotateRing {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateRingReverse {
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes orbFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.orb-label {
+    position: absolute;
+    bottom: -5px;
+    z-index: 8;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
+}
+
+/* =====================================================
+   FORM CARD
+   ===================================================== */
+
+.form-card {
+    padding: 35px;
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    background: var(--bg-card);
+    backdrop-filter: blur(25px);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.22);
+    animation: fadeUp 1s ease both;
+    animation-delay: 0.2s;
+}
+
+.form-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.section-label {
+    color: var(--cyan);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.form-heading h2 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 1.6rem;
+    font-weight: 750;
+}
+
+.form-heading p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.form-icon {
+    color: var(--cyan);
+    font-size: 2.5rem;
+    animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-6px) rotate(10deg);
+    }
+}
+
+/* =====================================================
+   INPUTS
+   ===================================================== */
+
+label {
+    display: block;
+    margin-bottom: 9px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.custom-input {
+    min-height: 52px;
+    color: white !important;
+    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+    border-radius: 13px !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    transition: all 0.25s ease;
+}
+
+textarea.custom-input {
+    min-height: 110px;
+}
+
+.custom-input::placeholder {
+    color: #64748b;
+}
+
+.custom-input:focus {
+    border-color: var(--cyan) !important;
+    box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1) !important;
+    transform: translateY(-2px);
+}
+
+select.custom-input option {
+    color: #0f172a;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.privacy-note {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+/* =====================================================
+   BUTTON
+   ===================================================== */
+
+.analyze-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 23px;
+    color: #082f49;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--green)
+    );
+    font-weight: 800;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(34, 211, 238, 0.2);
+}
+
+.analyze-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(34, 211, 238, 0.35);
+}
+
+.analyze-button:active {
+    transform: scale(0.97);
+}
+
+.button-icon {
+    font-size: 1.2rem;
+}
+
+.button-arrow {
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+}
+
+.analyze-button:hover .button-arrow {
+    transform: translateX(5px);
+}
+
+/* =====================================================
+   FEATURE CARDS
+   ===================================================== */
+
+.feature-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.feature-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 22px;
+    border: 1px solid rgba(148, 163, 184, 0.13);
+    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.45);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(34, 211, 238, 0.35);
+    background: rgba(15, 23, 42, 0.75);
+}
+
+.feature-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    color: var(--cyan);
+    background: rgba(34, 211, 238, 0.1);
+    font-size: 1.4rem;
+}
+
+.feature-card h3 {
+    margin: 0 0 5px;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.feature-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   LOADING OVERLAY
+   ===================================================== */
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(2, 6, 23, 0.88);
+    backdrop-filter: blur(18px);
+    z-index: 999;
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+.loading-box {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 25px;
+    background: rgba(15, 23, 42, 0.95);
+    animation: loadingAppear 0.4s ease both;
+}
+
+@keyframes loadingAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.loading-orb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    border: 2px solid rgba(34, 211, 238, 0.4);
+    border-top-color: var(--cyan);
+    border-radius: 50%;
+    color: var(--cyan);
+    font-size: 2rem;
+    animation: loadingSpin 1s linear infinite;
+}
+
+@keyframes loadingSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-box h2 {
+    font-size: 1.3rem;
+    font-weight: 750;
+}
+
+.loading-box p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.loading-box small {
+    display: block;
+    margin-top: 15px;
+    color: #64748b;
+    font-size: 0.72rem;
+}
+
+.progress-track {
+    height: 7px;
+    margin-top: 25px;
+    overflow: hidden;
+    border-radius: 50px;
+    background: #1e293b;
+}
+
+.progress-bar-custom {
+    width: 0%;
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--green)
+    );
+    transition: width 0.4s ease;
+}
+
+/* =====================================================
+   GENERAL ANIMATIONS
+   ===================================================== */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =====================================================
+   BODY IMAGE / 3D MODEL AREA
+   ===================================================== */
+
+.body-hologram {
+    position: relative;
+    z-index: 3;
+    width: 230px;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: bodyFloat 5s ease-in-out infinite;
+}
+
+/* Old image support */
+.body-hologram img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter:
+        saturate(1.35)
+        contrast(1.15)
+        brightness(0.95)
+        drop-shadow(0 0 12px rgba(34, 211, 238, 0.85))
+        drop-shadow(0 0 35px rgba(34, 211, 238, 0.45));
+    mix-blend-mode: screen;
+    position: relative;
+    z-index: 4;
+}
+
+/* Remove old scan lines */
+.body-hologram::before {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+}
+
+/* Hologram base glow */
+.body-hologram::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -15px;
+    width: 190px;
+    height: 30px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(
+        ellipse,
+        rgba(34, 211, 238, 0.8),
+        rgba(45, 212, 191, 0.3),
+        transparent 70%
+    );
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+/* Floating animation */
+@keyframes bodyFloat {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-8px) scale(1.025);
+    }
+}
+
+/* =====================================================
+   INTERACTIVE 3D HUMAN BODY MODEL
+   ===================================================== */
+
+.body-hologram model-viewer {
+    width: 100%;
+    height: 350px;
+    display: block;
+    background: transparent;
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+
+    /* Transparent loading poster */
+    --poster-color: transparent;
+
+    /* Better touch interaction */
+    touch-action: pan-y;
+
+    /* Prevent image effects from affecting 3D model */
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* 3D model focus style */
+.body-hologram model-viewer:focus {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+}
+
+/* Remove unwanted effects from model-viewer children */
+.body-hologram model-viewer * {
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* Keep 3D model above background glow */
+.body-hologram model-viewer {
+    position: relative;
+    z-index: 5;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 991px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 750px;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .safety-mini {
+        text-align: left;
+    }
+
+    .orb-section {
+        width: 300px;
+        height: 330px;
+        margin: 20px auto 0;
+    }
+
+    .body-hologram {
+        width: 210px;
+        height: 320px;
+    }
+
+    .body-hologram model-viewer {
+        height: 320px;
+    }
+
+    .form-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .analyze-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .main-container {
+        padding-top: 25px;
+    }
+
+    .custom-navbar {
+        padding: 18px 0;
+    }
+
+    .navbar-text {
+        display: none;
+    }
+
+    h1 {
+        font-size: 2.8rem;
+        letter-spacing: -1.5px;
+    }
+
+    .hero-description {
+        font-size: 0.92rem;
+    }
+
+    .form-card {
+        padding: 23px;
+        border-radius: 20px;
+    }
+
+    .feature-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-heading h2 {
+        font-size: 1.3rem;
+    }
+
+    .privacy-note {
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 576px) {
+    .orb-section {
+        width: 280px;
+        height: 315px;
+    }
+
+    .body-hologram {
+        width: 185px;
+        height: 290px;
+    }
+
+    .body-hologram model-viewer {
+        height: 290px;
+    }
+
+    .ring-three {
+        width: 290px;
+        height: 290px;
+    }
+}
+
+/* =====================================================
+   ACCESSIBILITY
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .body-hologram {
+        animation: none;
+    }
+}

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HealthSignal AI - Results</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <!-- Google Model Viewer -->
+    <script
+        type="module"
+        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    </script>
+
+    <style>
+        :root {
+            --bg-main: #07111f;
+            --bg-card: rgba(16, 31, 52, 0.88);
+            --border: rgba(148, 163, 184, 0.18);
+            --cyan: #67e8f9;
+            --teal: #5eead4;
+            --text-main: #f8fafc;
+            --text-soft: #a8b6ca;
+            --text-muted: #8292a9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-main);
+            background:
+                radial-gradient(
+                    circle at 8% 15%,
+                    rgba(34, 211, 238, 0.13),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 94% 70%,
+                    rgba(45, 212, 191, 0.12),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #091525 55%,
+                    #06101c
+                );
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.18;
+            background-image:
+                linear-gradient(
+                    rgba(148, 163, 184, 0.06) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(148, 163, 184, 0.06) 1px,
+                    transparent 1px
+                );
+            background-size: 45px 45px;
+        }
+
+        .custom-navbar {
+            min-height: 78px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+            background: rgba(7, 17, 31, 0.85);
+            backdrop-filter: blur(18px);
+        }
+
+        .brand-logo {
+            color: #f8fafc !important;
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .brand-logo span {
+            color: var(--cyan);
+        }
+
+        .navbar-text {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--text-soft);
+            font-size: 0.8rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 15px rgba(94, 234, 212, 0.9);
+        }
+
+        .result-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            padding-top: 55px;
+            padding-bottom: 75px;
+        }
+
+        .result-header {
+            margin-bottom: 35px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 16px;
+            border: 1px solid rgba(103, 232, 249, 0.25);
+            border-radius: 50px;
+            color: var(--cyan);
+            background: rgba(34, 211, 238, 0.06);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .result-header h1 {
+            margin-top: 22px;
+            margin-bottom: 0;
+            color: #f8fafc;
+            font-size: clamp(2.5rem, 5vw, 4.6rem);
+            font-weight: 850;
+            line-height: 1.05;
+            letter-spacing: -2px;
+        }
+
+        .gradient-text {
+            display: block;
+            color: var(--cyan);
+            background: linear-gradient(
+                100deg,
+                #67e8f9,
+                #5eead4,
+                #93c5fd
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            max-width: 700px;
+            margin-top: 22px;
+            color: var(--text-soft);
+            line-height: 1.8;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            min-height: 155px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            background: var(--bg-card);
+            backdrop-filter: blur(22px);
+        }
+
+        .summary-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(103, 232, 249, 0.2);
+            border-radius: 14px;
+            color: var(--cyan);
+            background: rgba(34, 211, 238, 0.09);
+            font-size: 1.3rem;
+        }
+
+        .summary-value {
+            margin-bottom: 4px;
+            color: #f8fafc;
+            font-size: 1.8rem;
+            font-weight: 850;
+        }
+
+        .summary-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .result-card {
+            height: 100%;
+            padding: 30px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: var(--bg-card);
+            backdrop-filter: blur(22px);
+        }
+
+        .result-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 24px;
+            color: #f8fafc;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .result-card h2 span {
+            color: var(--cyan);
+        }
+
+        .section-caption {
+            margin-top: -12px;
+            margin-bottom: 22px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .indicator-card {
+            margin-bottom: 15px;
+            padding: 20px;
+            border-left: 4px solid var(--cyan);
+            border-top: 1px solid rgba(103, 232, 249, 0.12);
+            border-right: 1px solid rgba(103, 232, 249, 0.12);
+            border-bottom: 1px solid rgba(103, 232, 249, 0.12);
+            border-radius: 17px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(34, 211, 238, 0.1),
+                    rgba(15, 23, 42, 0.35)
+                );
+        }
+
+        .indicator-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .indicator-title {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 1rem;
+            font-weight: 750;
+        }
+
+        .indicator-symbol {
+            color: var(--cyan);
+            margin-right: 6px;
+        }
+
+        .indicator-card p {
+            margin: 0;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .attention-badge {
+            padding: 6px 10px;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 50px;
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.08);
+            font-size: 0.65rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .empty-state {
+            padding: 35px 20px;
+            text-align: center;
+            color: var(--text-soft);
+        }
+
+        .empty-icon {
+            margin-bottom: 12px;
+            color: var(--teal);
+            font-size: 2rem;
+        }
+
+        .ai-report {
+            min-height: 260px;
+            padding: 23px;
+            border: 1px solid rgba(103, 232, 249, 0.13);
+            border-radius: 17px;
+            color: var(--text-soft);
+            background: rgba(7, 17, 31, 0.5);
+            line-height: 1.9;
+            white-space: pre-line;
+        }
+
+        /* Interactive 3D Human Body */
+
+        .model-viewer-container {
+            width: 100%;
+            min-height: 500px;
+            overflow: hidden;
+            border: 1px solid rgba(103, 232, 249, 0.25);
+            border-radius: 20px;
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(34, 211, 238, 0.08),
+                    rgba(7, 17, 31, 0.9)
+                );
+        }
+
+        .human-body-3d {
+            display: block;
+            width: 100%;
+            height: 500px;
+            background: transparent;
+            --poster-color: transparent;
+            touch-action: pan-y;
+        }
+
+        .human-body-3d:focus {
+            outline: 2px solid var(--cyan);
+            outline-offset: 3px;
+        }
+
+        .model-loading {
+            padding: 15px;
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .safe-box {
+            display: flex;
+            gap: 15px;
+            margin-top: 28px;
+            padding: 22px;
+            border: 1px solid rgba(251, 191, 36, 0.22);
+            border-radius: 18px;
+            color: var(--text-soft);
+            background: rgba(251, 191, 36, 0.06);
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        .safe-icon {
+            font-size: 1.5rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+            padding: 13px 20px;
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            border-radius: 50px;
+            color: var(--cyan);
+            text-decoration: none;
+            background: rgba(34, 211, 238, 0.07);
+            transition: 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #07111f;
+            background: var(--cyan);
+        }
+
+        @media (max-width: 991px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .result-container {
+                padding-top: 30px;
+            }
+
+            .result-header h1 {
+                font-size: 2.8rem;
+            }
+
+            .result-card {
+                padding: 20px;
+            }
+
+            .indicator-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .model-viewer-container {
+                min-height: 350px;
+            }
+
+            .human-body-3d {
+                height: 350px;
+            }
+
+            .safe-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar custom-navbar">
+        <div class="container">
+            <a class="navbar-brand brand-logo" href="/">
+                ✦ HealthSignal <span>AI</span>
+            </a>
+
+            <div class="navbar-text">
+                <span class="status-dot"></span>
+                Analysis Completed
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container result-container">
+
+        <!-- Header -->
+        <section class="result-header">
+            <div class="eyebrow">
+                ✦ STEP 02 · AWARENESS REPORT
+            </div>
+
+            <h1>
+                Your health signal
+                <span class="gradient-text">overview.</span>
+            </h1>
+
+            <p class="hero-description">
+                This report highlights possible areas for attention based
+                on the fictional information provided. These signals are
+                awareness-oriented and are not a medical diagnosis.
+            </p>
+        </section>
+
+        <!-- Summary Cards -->
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <div class="summary-icon">◈</div>
+
+                <div class="summary-value">
+                    {{ result.indicators|length }}
+                </div>
+
+                <div class="summary-label">
+                    Attention-worthy indicators detected
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon">✦</div>
+
+                <div class="summary-value">
+                    Local AI
+                </div>
+
+                <div class="summary-label">
+                    Explanation generated using the local prototype
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon">🛡️</div>
+
+                <div class="summary-value">
+                    {% if result.indicators|length <= 1 %}
+                    Safe
+                    {% elif result.indicators|length <= 3 %}
+                    Moderate
+                    {% else %}
+                    Risk
+                    {% endif %}
+                </div>
+                
+                <div class="summary-label">
+                    {% if result.indicators|length <= 1 %}
+                    No or very few attention-worthy indicators detected
+                    {% elif result.indicators|length <= 3 %}
+                    Some lifestyle factors may deserve attention
+                    {% else %}
+                    Multiple indicators require further attention
+                    {% endif %}
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Results -->
+        <div class="row g-4">
+
+            <!-- Indicators -->
+            <div class="col-lg-6">
+                <div class="result-card">
+
+                    <h2>
+                        <span>◈</span>
+                        Attention-worthy indicators
+                    </h2>
+
+                    <p class="section-caption">
+                        The following signals were highlighted by the
+                        prototype's illustrative awareness rules.
+                    </p>
+
+                    {% if result.indicators %}
+
+                        {% for indicator in result.indicators %}
+
+                            <div class="indicator-card">
+
+                                <div class="indicator-top">
+                                    <h3 class="indicator-title">
+                                        <span class="indicator-symbol">✦</span>
+                                        {{ indicator.name }}
+                                    </h3>
+
+                                    <span class="attention-badge">
+                                        ATTENTION
+                                    </span>
+                                </div>
+
+                                <p>
+                                    {{ indicator.reason }}
+                                </p>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="empty-state">
+                            <div class="empty-icon">✓</div>
+
+                            <strong>
+                                No attention signals identified
+                            </strong>
+
+                            <div>
+                                The prototype did not identify any signals
+                                using the provided fictional inputs.
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <!-- AI Explanation -->
+            <div class="col-lg-6">
+                <div class="result-card">
+
+                    <h2>
+                        <span>✦</span>
+                        AI-generated explanation
+                    </h2>
+
+                    <p class="section-caption">
+                        A locally generated, awareness-oriented explanation
+                        of the highlighted indicators.
+                    </p>
+
+                    <div class="ai-report">
+                        {{ result.explanation }}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Interactive 3D Model -->
+        <section class="result-card mt-4">
+
+            <h2>
+                <span>◉</span>
+                3D Human Body Model
+            </h2>
+
+            <p class="section-caption">
+                Drag the human body to rotate. Use the mouse wheel to zoom.
+            </p>
+
+            <div class="model-viewer-container">
+
+                <model-viewer
+                    id="humanBodyModel"
+                    class="human-body-3d"
+                    src="{{ url_for('static', filename='models/human_body.glb') }}"
+                    alt="Interactive 3D human body model"
+                    camera-controls
+                    auto-rotate
+                    rotation-per-second="20deg"
+                    touch-action="pan-y"
+                    shadow-intensity="1"
+                    exposure="1"
+                    loading="eager"
+                    interaction-prompt="auto"
+                    camera-orbit="0deg 75deg 2.5m"
+                    field-of-view="30deg">
+
+                </model-viewer>
+
+            </div>
+
+            <div
+                id="modelStatus"
+                class="model-loading">
+                Loading interactive 3D model...
+            </div>
+
+        </section>
+
+        <!-- Safety Notice -->
+        <div class="safe-box">
+
+            <div class="safe-icon">🛡️</div>
+
+            <div>
+                <strong>Responsible AI notice:</strong>
+                This prototype provides awareness-oriented information only.
+                It does not diagnose diseases, calculate medical risk scores,
+                or replace advice from a qualified healthcare professional.
+                If symptoms are persistent, worsening, or concerning, seek
+                appropriate professional guidance.
+            </div>
+
+        </div>
+
+        <!-- Back Button -->
+        <a href="/" class="back-button">
+            <span>←</span>
+            Analyze another fictional case
+        </a>
+
+    </main>
+
+    <script>
+        const model = document.getElementById("humanBodyModel");
+        const modelStatus = document.getElementById("modelStatus");
+
+        model.addEventListener("load", function () {
+            modelStatus.textContent =
+                "3D model loaded successfully. Drag to rotate.";
+        });
+
+        model.addEventListener("error", function () {
+            modelStatus.textContent =
+                "Unable to load 3D model. Check static/models/human_body.glb.";
+            modelStatus.style.color = "#fca5a5";
+        });
+    </script>
+
+</body>
+</html>
